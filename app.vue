@@ -13,3 +13,13 @@
 
   </div>
 </template>
+<script setup>
+import { useAuth } from './composables/useAuth';
+const {getUser, getUserPicture} =  useAuth()
+
+getUser()
+await getUserPicture()
+
+
+
+</script>

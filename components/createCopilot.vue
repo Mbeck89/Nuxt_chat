@@ -1,8 +1,14 @@
-<script lang="ts" setup></script>
+<script setup>
+
+
+
+
+
+</script>
 
 <template>
   <div>
-        <slot />
+    Component: createCopilot
   </div>
 </template>
 

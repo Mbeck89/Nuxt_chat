@@ -1,4 +1,4 @@
-import { Message as VercelChatMessage, StreamingTextResponse } from 'ai'
+import {  StreamingTextResponse } from 'ai'
 // import { AIMessage, HumanMessage } from 'langchain/schema'
 import { ChatOpenAI } from '@langchain/openai'
 // import { OpenAIClient, AzureKeyCredential } from '@azure/openai'
@@ -13,12 +13,12 @@ export default defineEventHandler(async event => {
   const apiVersion = useRuntimeConfig().AZURE_OPENAI_VERSION
 
   const { messages, modelDeployment, settings } = await readBody(event)
-
+  console.log(modelDeployment, settings)
   const formatMessage = message => {
     return `${message.role}: ${message.content}`
   }
   const TEMPLATE = `${settings.systemPrompt}
- 
+    Format your response in markdown!
     Current conversation:
     {chat_history}
     

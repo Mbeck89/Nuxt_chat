@@ -1,75 +1,87 @@
 <script setup >
+import { marked } from "marked";
 import { useChat } from 'ai/vue';
+
+
+const {userPicture, user} = useAuth()
+
+const model = ref("gpt-4-fra")
+// {
+//     _index: 'models',
+//     _id: 'HzFb-o0BN5pUxYtoLQrj',
+//     _score: 1.0418735,
+//     _source: {
+//       name: 'GPT-4',
+//       source: 'gpt-4-fra',
+//       shared: [Array],
+//       status: 'ready'
+//     }
+
+
 const settings = ref({
   systemPrompt: "You are a pirate named Patchy. All responses must be extremely verbose and in pirate dialect.",
   temperature: 0.5,
   topp: 0.95
 })
+const body = ref({ modelDeployment: model.value, settings: settings.value })
+watch(() => body.value, (newValue, oldValue) => {
+  console.log(newValue)
+}, {
+  deep: true
+})
+const { messages, input, handleSubmit } = useChat({ api: "/api/chat/llm", body:body.value });
 
-const { messages, input, handleSubmit } = useChat({ api: "/api/llm", body: { modelDeployment: "gpt-4-fra", settings: settings.value } });
-const prompt = ref("")
-//const messages = ref([])
+
 const loading = ref(false)
 const op = ref();
 const toggle = (event) => {
   op.value.toggle(event);
 }
 
+const markdownToHtml = (markdown) => {  
+  return marked(markdown)
+}
+console.log("in chat" + user)
+const { data: models, error } = await useFetch('/api/models', {  
+  query: {
+    userid: 123
+  }
+})
 
-// const submit = async () => {
-//   try {
-//     messages.value.push({ role: "user", content: prompt.value })
-//     const { body } = await $fetch('/api/chat', {
-//       method: 'POST',
-//       body: {
-//         messages: messages.value,
-//         "modelDeployment": "gpt-4-fra"
-//       }
-//     })
-//     console.log("body fetched")
-//     messages.value.push({ role: 'assistant', content: "" })
-//     loading.value = true
-//     useChatStream({
-//       body,
-//       onChunk: ({ data }) => {
-//         console.log(data)
-//         messages.value[messages.value.length - 1].content += data;
-//       },
-//       onReady: () => {
-//         console.log("done")
-//         loading.value = false
-//       },
-//     });
-//     console.log("result is")
-//   } catch (error) {
-//     throw createError({
-//       statusCode: 500,
-//       message: 'Failed to forward request to server',
-//     })
-//   }
 
-// }
 
 </script>
  
 <template>
-  <div class="flex flex-col w-full mx-auto min-h-screen relative justify-end px-20">
-    <div class="flex flex-col-reverse items-center justify-start gap-3">
+  <div class="flex flex-col h-screen mx-8">
+    
+    <div class="p-2 flex gap-2 align-center">
+      <Dropdown v-model="model" :options="models" optionLabel="name" placeholder="Select a Model" class="w-80"/>
+      <Button icon="pi pi-cog" severity="secondary" @click="toggle" />
+    </div>
+    
+    <div class="flex-1 overflow-auto p-4 gap-2 flex flex-col-reverse">
       <div v-for="(message, index) in messages" :key="index"
-        class="shadow-md p-2 bg-red-200 w-auto self-end min-w-60 text-center">
-        <span>{{ message.content }}</span>
+        class="shadow-md p-2 bg-red-200 w-auto">
+        <div class="flex gap-2 align-center bg-blue-200">
+          <Avatar image="/blankProfile.jpg"></Avatar>
+          <span class="text-sm"> 05.10.2023 14:00</span>
+        </div>
+        
+        <span v-html="markdownToHtml(message.content)"></span>
       </div>
     </div>
-    <div class="w-full bottom-0 sticky flex justify-center items-center py-2 gap-2">
+    <div class="w-full flex justify-center items-center py-2 gap-2">
       <Textarea v-model="input" class="w-3/4" autoResize rows="2" placeholder="start prompting..."
         :loading="loading"></Textarea>
       <Button icon="pi pi-send" severity="primary" @click="handleSubmit" />
-      <Button icon="pi pi-cog" severity="secondary" @click="toggle" />
+      
     </div>
   </div>
   <OverlayPanel ref="op">
     <div class="flex flex-col gap-3 w-25rem p-2">
       <span class="font-bold">Customize your chat with a system prompt</span>
+      <Avatar :image="userPicture"></Avatar>
       <Textarea v-model="settings.systemPrompt" placeholder="Your Systemprompt..." rows="4" autoResize />
       <span class="font-bold">LLM Settings</span>
       <div class="flex flex-col gap-4">

@@ -1,4 +1,8 @@
-<script lang="ts" setup>
+<script  setup>
+import { useAuth } from '../composables/useAuth';
+
+const {login} = useAuth()
+
 definePageMeta({
   layout: "login"
 })
@@ -6,8 +10,11 @@ definePageMeta({
 </script>
 
 <template>
-  <div>
-    Page: Login
+  <div class="flex items-center justify-center h-screen content-center bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90%">
+    <div >
+      <Button @click="login">Login</Button>
+    </div>
+    
   </div>
 </template>
 
