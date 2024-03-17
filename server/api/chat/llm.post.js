@@ -1,4 +1,4 @@
-import {  StreamingTextResponse } from 'ai'
+import { StreamingTextResponse } from 'ai'
 // import { AIMessage, HumanMessage } from 'langchain/schema'
 import { ChatOpenAI } from '@langchain/openai'
 // import { OpenAIClient, AzureKeyCredential } from '@azure/openai'
@@ -17,7 +17,7 @@ export default defineEventHandler(async event => {
   const formatMessage = message => {
     return `${message.role}: ${message.content}`
   }
-  const TEMPLATE = `${settings.systemPrompt}
+  const TEMPLATE = `${settings.persona}
     Format your response in markdown!
     Current conversation:
     {chat_history}
@@ -27,11 +27,10 @@ export default defineEventHandler(async event => {
 
   try {
     const model = new ChatOpenAI({
-      temperature: 0.9,
       azureOpenAIApiKey: apiKey, // In Node.js defaults to process.env.AZURE_OPENAI_API_KEY
       azureOpenAIApiVersion: apiVersion, // In Node.js defaults to process.env.AZURE_OPENAI_API_VERSION
       azureOpenAIApiInstanceName: apiEndpoint, // In Node.js defaults to process.env.AZURE_OPENAI_API_INSTANCE_NAME
-      azureOpenAIApiDeploymentName: modelDeployment,
+      azureOpenAIApiDeploymentName: modelDeployment.source,
       temperature: settings.temperature,
       top_n: settings.topp // In Node.js defaults to process.env.AZURE_OPENAI_API_DEPLOYMENT_NAME
     })
@@ -47,7 +46,10 @@ export default defineEventHandler(async event => {
     return new StreamingTextResponse(stream)
   } catch (error) {
     console.error(error)
-    return
+    throw createError({
+      statusCode: 400,
+      statusMessage: error.message
+    })
   }
 
   // const formatChatHistory = messageTree => {

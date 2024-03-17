@@ -21,7 +21,7 @@
 //     Format your response in markdown!
 //     Current conversation:
 //     {chat_history}
-    
+
 //     User: {input}
 //     AI:`
 
@@ -67,3 +67,23 @@
 
 //   //const client = new OpenAIClient(apiEndpoint, new AzureKeyCredential(apiKey))
 // })
+
+import { addDoc } from '~/server/databases/elasticsearch'
+
+export default defineEventHandler(async event => {
+  try {
+    const configRuntime = useRuntimeConfig()
+    const { data } = await readBody(event)
+    const type = getRouterParam(event, 'index')
+
+    if (configRuntime.database === 'elasticsearch') {
+      const persona = await addDoc(type, data)
+      return
+    }
+  } catch (error) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: error.message
+    })
+  }
+})

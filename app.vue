@@ -10,15 +10,21 @@
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>
+    <UNotifications />
 
   </div>
 </template>
 <script setup>
-import { useAuth } from './composables/useAuth';
-const {getUser, getUserPicture} =  useAuth()
+// import { useAuth } from './composables/useAuth';
+// const { getUser, getUserPicture } = useAuth()
 
-getUser()
-await getUserPicture()
+
+// await callOnce
+//   (async () => {
+//     getUser()
+//     await getUserPicture()
+//   })
+
 
 
 

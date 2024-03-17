@@ -15,16 +15,16 @@
     "@elastic/elasticsearch": "^8.12.2",
     "@langchain/community": "^0.0.34",
     "@langchain/openai": "^0.0.15",
+    "@nuxt/image": "^1.4.0",
+    "@nuxt/ui": "^2.14.2",
     "ai": "^2.2.37",
     "langchain": "^0.1.23",
     "marked": "^12.0.0",
     "mongodb": "^6.3.0",
     "nuxt": "^3.10.3",
-    "primeicons": "^6.0.1",
-    "primevue": "^3.49.1",
-    "prism": "^4.1.2",
     "vue": "^3.4.19",
-    "vue-router": "^4.3.0"
+    "vue-router": "^4.3.0",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.17",

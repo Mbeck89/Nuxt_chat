@@ -1,24 +1,21 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   ssr: false,
-  devtools: { enabled: true }, 
-  plugins: [     
-    {src: '~/plugins/auth/msal', mode: "client"}
-  ],
-  modules: ['nuxt-primevue'],
-  primevue: {
-    /* Options */
-    components: {
-      include: '*',
-      exclude: ['Galleria', 'Carousel']
-    },
-    cssLayerOrder: 'tailwind-base, primevue, tailwind-utilities'
+  devtools: { enabled: true },
+  plugins: [{ src: '~/plugins/auth/msal', mode: 'client' }],
+  modules: ['@nuxt/ui', '@nuxt/image'],
+  colorMode: {
+    preference: 'light'
   },
-  css: [
-    'primevue/resources/themes/aura-light-green/theme.css',
-    '~/assets/css/main.css',
-    'primeicons/primeicons.css'
-  ],
+  ui: {
+    primary: 'green',
+    gray: 'cool',
+    notifications: {
+      // Show toasts at the top right of the screen
+      position: 'top-0 bottom-auto'
+    }
+  },
+
   runtimeConfig: {
     AZURE_OPENAI_API_KEY: process.env.AZURE_OPENAI_API_KEY,
     AZURE_OPENAI_ENDPOINT: process.env.AZURE_OPENAI_ENDPOINT,
@@ -35,11 +32,5 @@ export default defineNuxtConfig({
     }
 
     // can be overridden by NUXT_API_SECRET environment variable
-  },
-  postcss: {
-    plugins: {
-      tailwindcss: {},
-      autoprefixer: {}
-    }
   }
 })
