@@ -28,7 +28,7 @@ jobs:
           AUTH_TENANT_ID: ${{ secrets.AUTH_TENANT_ID}}
           AUTH_BASE_URL: ${{ secrets.AUTH_BASE_URL}}
           SET_DATABASE: ${{ secrets.SET_DATABASE}}
-          ELASTIC_CLOUD_ID=: ${{ secrets.ELASTIC_CLOUD_ID=}}
+          ELASTIC_CLOUD_ID=: ${{ secrets.ELASTIC_CLOUD_ID}}
           ELASTIC_USERNAME: ${{ secrets.ELASTIC_USERNAME}}
           ELASTIC_PASSWORD: ${{ secrets.ELASTIC_PASSWORD}}
       - name: Build And Deploy
