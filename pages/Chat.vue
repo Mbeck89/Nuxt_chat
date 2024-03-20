@@ -5,7 +5,7 @@ import { useChat } from 'ai/vue';
 
 
 
-const { user, userPicture, logout } = useAuth()
+const { user, userPicture, logout, getUser, getUserPicture } = useAuth()
 const { notify } = useNotify()
 const aiIcon = "/chatgpt.svg"
 
@@ -21,7 +21,7 @@ const { data: personas } = await useFetch('/api/personas', {
   }
 })
 const selectedModel = ref({})
-selectedModel.value = models.value[0]
+selectedModel.value = models.value[0] ?? []
 const selectedPersona = ref({})
 selectedPersona.value = personas.value.filter(per => per.name === "Default")[0]
 
@@ -108,14 +108,14 @@ const newModel = ref(false)
         </template>
       </UPopover>
       <UButton icon="i-heroicons-plus-circle" color="white" @click="newModel = true" />
-      <UButton icon="i-heroicons-plus-circle" color="white" @click="logout" />
+      <UButton icon="i-heroicons-arrow-left-end-on-rectangle" color="white" @click="logout" />
 
 
     </div>
 
     <div class="flex-1 overflow-auto p-4 gap-2 flex flex-col">
       <div v-for="(message, index) in messages" :key="index" class="shadow-md p-2 bg-slate-300 rounded w-auto"
-        :class="message.role === 'user' ? 'bg-primary-200' : 'bg-slate-200'">
+        :class="message.role === 'user' ? 'bg-primary-700' : 'bg-slate-600'">
         <div class="flex relative gap-2 pb-1 items-center font-thin font-xs after:h-[1px] after:w-[200px] after:bg-gradient-to-r after:from-transparent after:via-primary
     after:to-transparent after:absolute after:-bottom-[2px] after:content-['']">
           <UAvatar :src="message.role === 'user' ? userPicture : aiIcon" />
@@ -132,41 +132,5 @@ const newModel = ref(false)
 
     </div>
   </div>
-  <!-- <OverlayPanel ref="op">
-    <div class="flex flex-col gap-3 w-25rem p-2">
-      <span class="font-bold">Customize your chat with a system prompt</span>
-      <    alt="Avatar" :src="userPicture"></  />>
-      <UTextarea v-model="settings.systemPrompt" placeholder="Your Systemprompt..." rows="4" autoResize />
-      <span class="font-bold">LLM Settings</span>
-      <div class="flex flex-col gap-4">
-        <div class="flex gap-2 items-center">
-          <span class="text-sm">Temperatur</span>
-          <i class="pi pi-info-circle" size="xs"
-            v-tooltip="'Steuert die Zufallszufälligkeit. Wenn Sie die Temperatur senken, führt das Modell zu sich wiederholenden und deterministischeren Antworten. Eine Erhöhung der Temperatur führt zu unerwarteteren oder kreativeren Antworten. Versuchen Sie, die Temperatur oder Top P anzupassen, aber nicht beides.'"
-            style="font-size: 1rem; color: rgb(206, 123, 123)" />
-        </div>
-
-        <Slider v-model="settings.temperature" :min="0.1" :max="1" :step="0.1" />
-        <InputText v-model.number="settings.temperature" />
-      </div>
-      <div class="flex flex-col gap-4">
-        <div class="flex gap-2 items-center">
-          <span class="text-sm">Top P</span>
-          <i class="pi pi-info-circle" size="xs"
-            v-tooltip="'Ähnlich wie bei der Temperatur steuert dies die Zufallszufälligkeit, verwendet aber eine andere Methode. Durch das Senken des Top P wird die Tokenauswahl des Modells auf wahrscheinlichere Token eingegrenzt. Durch Erhöhen des Top P kann das Modell aus Token mit hoher und niedriger Wahrscheinlichkeit auswählen. Versuchen Sie, die Temperatur oder Top P anzupassen, aber nicht beides.'"
-            style="font-size: 1rem; color: rgb(206, 123, 123)" />
-        </div>
-        <Slider v-model="settings.topp" :min="0.1" :max="1" :step="0.1" />
-        <InputText v-model.number="settings.topp" />
-      </div>
-      <UButton icon="pi pi-check" label="Save as default"></UButton>
-
-
-
-
-    </div>
-  </OverlayPanel>
-   -->
-
   <ModalNewModel v-model="newModel" />
 </template>

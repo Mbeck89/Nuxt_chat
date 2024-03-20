@@ -30,7 +30,7 @@ export default defineEventHandler(async event => {
       azureOpenAIApiKey: apiKey, // In Node.js defaults to process.env.AZURE_OPENAI_API_KEY
       azureOpenAIApiVersion: apiVersion, // In Node.js defaults to process.env.AZURE_OPENAI_API_VERSION
       azureOpenAIApiInstanceName: apiEndpoint, // In Node.js defaults to process.env.AZURE_OPENAI_API_INSTANCE_NAME
-      azureOpenAIApiDeploymentName: modelDeployment.source,
+      azureOpenAIApiDeploymentName: modelDeployment.deployment,
       temperature: settings.temperature,
       top_n: settings.topp // In Node.js defaults to process.env.AZURE_OPENAI_API_DEPLOYMENT_NAME
     })

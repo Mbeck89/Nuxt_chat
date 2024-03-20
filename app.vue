@@ -15,15 +15,15 @@
   </div>
 </template>
 <script setup>
-// import { useAuth } from './composables/useAuth';
-// const { getUser, getUserPicture } = useAuth()
+//import { useAuth } from './composables/useAuth';
+const { getUser, getUserPicture } = useAuth()
 
 
-// await callOnce
-//   (async () => {
-//     getUser()
-//     await getUserPicture()
-//   })
+await callOnce
+  (async () => {
+    getUser()
+    await getUserPicture()
+  })
 
 
 

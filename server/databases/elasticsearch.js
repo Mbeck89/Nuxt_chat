@@ -1,4 +1,5 @@
 import { Client } from '@elastic/elasticsearch'
+import { string } from 'zod'
 
 const runTimeConfig = useRuntimeConfig()
 let config
@@ -34,7 +35,7 @@ export const getModels = async userid => {
           should: [
             {
               term: {
-                shared: 'system'
+                shared: 'default'
               }
             },
             {
@@ -84,3 +85,15 @@ export const addDoc = async (index, data) => {
     throw error
   }
 }
+
+
+// models
+// {
+//   name:
+//   description:
+//   source: default|sharepoint|azureblobstorage
+//   shared: [ids]
+//   deployment: string
+
+// }
+// type 
