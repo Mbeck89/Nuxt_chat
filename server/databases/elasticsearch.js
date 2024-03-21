@@ -1,5 +1,4 @@
 import { Client } from '@elastic/elasticsearch'
-import { string } from 'zod'
 
 const runTimeConfig = useRuntimeConfig()
 let config

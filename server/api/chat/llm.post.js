@@ -2,8 +2,8 @@ import { StreamingTextResponse } from 'ai'
 // import { AIMessage, HumanMessage } from 'langchain/schema'
 import { ChatOpenAI } from '@langchain/openai'
 // import { OpenAIClient, AzureKeyCredential } from '@azure/openai'
-import { BytesOutputParser } from 'langchain/schema/output_parser'
-import { PromptTemplate } from 'langchain/prompts'
+import { BytesOutputParser } from '@langchain/core/output_parsers'
+import { PromptTemplate } from '@langchain/core/prompts'
 
 //import { HttpResponseOutputParser } from 'langchain/output_parsers'
 

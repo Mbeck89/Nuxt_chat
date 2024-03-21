@@ -7,6 +7,7 @@ import { useChat } from 'ai/vue';
 
 const { user, userPicture, logout, getUser, getUserPicture } = useAuth()
 const { notify } = useNotify()
+
 const aiIcon = "/chatgpt.svg"
 
 const { data: models, error } = await useFetch('/api/models', {
@@ -62,6 +63,20 @@ const now = computed(() => {
 
 const newModel = ref(false)
 
+// COlor Mode
+function colorMode() {
+  const colorMode = useColorMode()
+  const isDark = computed({
+    get() {
+      return colorMode.value === 'dark'
+    },
+    set() {
+      colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
+    }
+  })
+  return {isDark}
+}
+const {isDark} = colorMode()
 
 </script>
 
@@ -109,13 +124,14 @@ const newModel = ref(false)
       </UPopover>
       <UButton icon="i-heroicons-plus-circle" color="white" @click="newModel = true" />
       <UButton icon="i-heroicons-arrow-left-end-on-rectangle" color="white" @click="logout" />
+      <UButton :icon="isDark ? 'i-heroicons-moon-20-solid' : 'i-heroicons-sun-20-solid'" color="white" @click="isDark = !isDark" />
 
 
     </div>
 
     <div class="flex-1 overflow-auto p-4 gap-2 flex flex-col">
-      <div v-for="(message, index) in messages" :key="index" class="shadow-md p-2 bg-slate-300 rounded w-auto"
-        :class="message.role === 'user' ? 'bg-primary-700' : 'bg-slate-600'">
+      <div v-for="(message, index) in messages" :key="index" class="shadow-md p-2 rounded w-auto"
+        :class="message.role === 'user' ? 'bg-primary-200 dark:bg-primary-700' : 'bg-slate-200 dark:bg-slate-700'">
         <div class="flex relative gap-2 pb-1 items-center font-thin font-xs after:h-[1px] after:w-[200px] after:bg-gradient-to-r after:from-transparent after:via-primary
     after:to-transparent after:absolute after:-bottom-[2px] after:content-['']">
           <UAvatar :src="message.role === 'user' ? userPicture : aiIcon" />

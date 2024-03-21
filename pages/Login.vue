@@ -11,7 +11,7 @@ definePageMeta({
 
 <template>
   <div
-    class="flex items-center justify-center h-screen content-center bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90%">
+    class="flex items-center justify-center h-screen content-center bg-gradient-to-r from-primary-200 from-10% to-primary-900 to-90%">
     <div>
       <UButton @click="login">Login</UButton>
     </div>
